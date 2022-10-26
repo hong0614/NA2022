@@ -1,16 +1,7 @@
 #pragma once
 #include <vector>
 #include <iostream>
-
 using namespace std;
-
-int factorial(int num)
-{
-	if (num == 0) //基本情况返回1;
-		return 1;
-	else
-		return num * factorial(num - 1);
-}
 
 class Function
 {
@@ -31,9 +22,9 @@ vector<double>getNewton(const vector<double>& x, vector<double>f)
 	c[0] = f[0];
 	for (int i = 1; i < n; i++)
 	{
-		for (int j = 0; j < n - i; j++) temp[j] = (f[j + 1] - f[j]) / (x[j + 1] - x[j]);
+		for (int j = 0; j < n - i; j++) temp[j] = (f[j + 1] - f[j]) / (x[j + i] - x[j]);
 		f = temp;
-		c[i] = f[0];		
+		c[i] = f[0];
 	}
 	return c;
 }
@@ -44,9 +35,8 @@ void NewtonPolynomial(vector<double>& c, const vector<double>& x)
 	cout << c[0];
 	for (int i = 1; i < n; i++)
 	{
-		c[i] = c[i] / factorial(i);
 		cout << showpos << c[i];
-		for (int j = 0; j < i; j++) cout << "(x" << showpos << - x[j] << ")";
+		for (int j = 0; j < i; j++) cout << "(x" << showpos << -x[j] << ")";
 	}
 	cout << '\n';
 }
@@ -62,3 +52,38 @@ double getvalue(const vector<double>& c, const vector<double>& x, double xval)
 	}
 	return fx;
 }
+
+void HermitePoly(vector<double> x, vector<double> y, vector<double> _x)
+{
+	vector<vector<double>> f;
+	f.resize(x.size() + 1);
+	for (int i = 0; i <= x.size(); i++)
+	{
+		f[i].resize(x.size() + 1);
+	}
+	for (int i = 0; i < x.size(); i++)
+	{
+		f[i][0] = y[i];
+	}
+	for (int i = 1; i < x.size(); i = i + 2)
+	{
+		f[i][1] = _x[i];
+	}
+	for (int i = 2; i < x.size(); i = i + 2)
+	{
+		f[i][1] = (f[i][0] - f[i - 1][0]) / (x[i] - x[i - 2]);
+	}
+	for (int i = 2; i < x.size(); i++)
+	{
+		for (int j = i; j < x.size(); j++)
+		{
+			f[j][i] = (f[j][i - 1] - f[j - 1][i - 1]) / (x[j] - x[j - i]);
+		}
+	}
+	for (int i = 0; i < f.size(); i++)
+	{
+		cout << showpos << f[i][i];
+		for (int j = 0; j < i; j++) cout << "(x" << showpos << -x[j] << ")";
+	}
+	cout << '\n';
+};
