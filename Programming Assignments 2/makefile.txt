@@ -1,10 +1,10 @@
 make : Interpolation.h QB.cpp QC.cpp QD.cpp QE.cpp
-	g++ -o B Header.h Q_B.cpp
+	g++ -o B Interpolation.h QB.cpp
 	./B
-	g++ -o C Header.h Q_C.cpp
+	g++ -o C Interpolation.h QC.cpp
 	./C
-	g++ -o D Header.h Q_D.cpp
+	g++ -o D Interpolation.h QD.cpp
 	./D
-	g++ -o E Header.h Q_E.cpp
+	g++ -o E Interpolation.h QE.cpp
 	./E
 
