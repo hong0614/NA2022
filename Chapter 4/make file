@@ -1,0 +1,5 @@
+make: B.cpp
+	g++ -o  B.cpp
+	./B > B.txt
+report: report.tex
+	xelatex report.tex
