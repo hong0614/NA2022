@@ -3,3 +3,4 @@ make: B.cpp
 	./B > B.txt
 report: report.tex
 	xelatex report.tex
+	
