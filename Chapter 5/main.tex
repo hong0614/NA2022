@@ -1,0 +1,145 @@
+\documentclass{article}
+\usepackage{amssymb}
+\title{\textbf{Theoretical Questions Chapter 5}}
+\author{Ling Siu Hong \\ 3200300602}
+\newcommand{\dif}{\mathrm{d}}
+\newcommand{\avg}[1]{\left\langle #1 \right\rangle}
+\newcommand{\norm}[1]{\left\| #1 \right\|}
+\begin{document}
+\maketitle
+
+\textbf{I} : We need to prove that the following equations statifies axioms of inner product space over $\mathbb{C}$.
+\begin{equation}
+    \avg{u,v} = \int_a^b \rho(t) u(t) \overline{v(t)} \dif t.
+\end{equation}
+
+(1) real positivity: 
+    \begin{equation}
+        \forall u \in \mathcal{C}[a,b],\quad \avg{u,u} = \int_a^b \rho(t) u(t) \overline{u(t)} \dif t =
+	\int_a^b \rho(t) |u(t)|^2 \dif t \geq 0.
+    \end{equation}
+    
+(2) definiteness: \\
+\begin{equation}
+        \avg{u,u} = 0 \Leftrightarrow \rho(t) |u(t)|^2 = 0 
+        \Leftrightarrow |u(t)|^2 = 0  
+        \Leftrightarrow u=0 
+\end{equation}
+
+
+(3) additivity in the first slot: \\
+\begin{equation}
+		\forall u,v,w\in \mathcal{C}[a,b],\quad
+		\avg{u+w,v}   = \int_a^b \rho(t)(u(t) + w(t)) \overline{v(x)} \dif t  
+		        =  \int_a^b \rho(t)u(t)\overline{v(t)} \dif t + \int_a^b \rho(t)w(t)\overline{w(t)} \dif t 
+		    = \avg{u,v} + \avg{w,v} 
+\end{equation}
+
+
+(4) homogeneity in the first slot: \\
+\begin{equation}
+    	\forall c\in \mathcal{C},\quad \forall u,v \in \mathcal{C}[a,b],\quad
+	\avg{cu,v} = c\int_a^b\rho(t)u(t)\overline{v(t)} \dif t = c \avg{u,v}
+\end{equation}
+
+(5) conjugate symmetry : \\
+\begin{equation}
+    \forall u,v \in \mathcal{C}[a,b] \quad
+    \avg{u,v} =\int_{a}^{b}\rho(t)u(t)\overline{v(t)} \dif t\\
+    =\overline{\int_a^b \overline{\rho(x)u(x)\overline{v(x)}} \dif x}\\
+    =\overline{\int_a^b \rho(x) v(x) \overline{u(x)} \dif x}\\
+    =\overline{\avg{v,u}}
+\end{equation}
+
+We also need to prove the axioms of norm,
+(1) real positivity:
+\begin{equation}
+    \norm{u}_2 = \left( \int_a^b \rho(t) |u(t)|^2 \dif t \right)^{1/2}   \geq 0
+\end{equation}
+
+(2) definiteness:
+\begin{equation}
+    \norm{u}_2 = 0 \Leftrightarrow \rho(t) |u(t)|^2 = 0 \Leftrightarrow |u(t)|^2 = 0 \Leftrightarrow u=0
+\end{equation}
+
+(3) homogeneity
+\begin{equation}
+    \forall c \in \mathbb{C},\quad \norm{cu}_2 = \left( \int_a^b \rho(t) |cu(t)|^2 \dif t\right)^{1/2}
+	= |c| \left( \int_a^b \rho(t) |u(t)|^2 \dif t \right)^{1/2} =|c| \norm{u}_2
+\end{equation}
+
+(4) triangle inequality:
+\begin{equation}
+		\forall u,v \in \mathcal{C}[a,b],\quad \norm{u+v}_2
+		  = \left( \int_a^b \rho(x) |u(x) + v(x)|^2 \dif x \right)^{1/2} 
+\end{equation}
+\begin{equation}
+		  \leq \left( \int_a^b \rho(x) |u(x)|^2 \dif x \right)^{1/2}
+		+\left( \int_a^b \rho(x) |v(x)|^2 \dif x \right)^{1/2}            \\
+		 = \norm{u}_2 + \norm{v}_2
+\end{equation}
+
+\textbf{II}:By Definition 2.41, $T_n(x) = \cos(n \arccos(x))$, \\
+(a): 
+\begin{equation*}
+     For \forall m,n \left\langle  Tm,Tn  \right\rangle 
+     =\int_{-1}^{1} \rho(t)T_n(t)\overline{T_{m}(t)} dt\\
+    =\int_{-1}^{1}\frac{\cos(n \arccos t)\cos(m\arccos t)}{\sqrt{1-t^2}} dt\\
+\end{equation*}
+\begin{equation*}
+    =\int_{0}^{\pi} \cos(m\theta) \cos(n\theta) d\theta \\
+    =\int_{0}^{\pi}\frac{\cos(m\theta + n\theta)}{\cos(m\theta - n\theta)} d\theta  \\
+    = \left\{
+    \begin{array}
+        \cos \frac{\pi}{2} \quad when \quad m = n \neq 0 \\
+        0, \quad when \quad m\neq n \\
+        \pi \quad when \quad m = n =0 \\
+    \end{array} 
+\end{equation*} \\
+Therefore, ${T_n}$ are orthogonal. 
+
+ (bi):
+ We have $T_0(x)=1 $ , $ T_1(x)=x $ ,$T_2(x) = 2x^2-1$, after normalized , we get $T_0^*(x) = \frac{1}{\sqrt{\pi}}$ , $T_1^*(x) = \sqrt{\frac{\pi}{2}}x$ and $T_2^*(x)=\sqrt{\frac{2}{\pi}}(2x^2-1)$.
+
+ \textbf{III}(a): With the basis $(T_0^*,T_1^*,T_2^*)$,the Fourier coefficients are $\avg{y,T_0^*} = \frac{2}{\sqrt{\pi}}$, $\avg{y,T_1^*} = 0$ , $\avg{y,T_2^*} = -\frac{2}{3}\sqrt{\frac{2}{\pi}}$, the approximate function is $\hat{\phi}(x) = \frac{2}{\sqrt{\pi}}T_0^* + 0T_1^* + -\frac{2}{3}\sqrt{\frac{2}{\pi}}T_2^* = \frac{10}{3\pi} -\frac{8}{3\pi}x^2$ 
+ 
+ (b):
+
+\[
+  G(1,x,x^2) =
+  \left[ {\begin{array}{ccc}
+    \avg{1,1}& \avg{1,x} & \avg{1,x^2}\\
+    \avg{1,1}& \avg{1,x} & \avg{1,x^2}\\
+    \avg{1,1}& \avg{1,x} & \avg{1,x^2}
+  \end{array} } \right]
+  =\left[ {\begin{array}{ccc}
+    \pi& 0 & \frac{\pi}{2}\\
+    0 & \frac{\pi}{2} & 0\\
+    \frac{\pi}{2}& 0 & \frac{3\pi}{2}
+  \end{array} } \right]
+\]
+\[ c = (\avg{y,1} , \avg{y,x} , \avg{y,x^2} )^T = (2,0,3)^T\]
+We can solve the equation $G^Ta=c$, then we can get $a = (\frac{10}{3\pi} , 0 , -\frac{8}{3\pi})$,thus the approximate function$\hat{\phi}(x) = \frac{10}{3\pi} -\frac{8}{3\pi}x^2$ 
+
+\textbf{IV (a)}: Using the monomials $(1,x,x^2)$,with inner product$\avg{u,v} = \sum_i^{12}u(t_i)v(t_i)$,then we have 
+\[ u_1=v_1=1, \norm{v_1}=\sqrt{12} , u_1^* = \frac{1}{2\sqrt{3}}\] ,
+\[v_2 = u_2 -\avg{u_2,u_1^*}u_1^* = x - \frac{13}{2}, u_1^* = \frac{1}{\sqrt{143}}(x-\frac{13}{2})\],
+\[v_3 = u_3 - \avg{u_3,u_1^*}u_1^* - \avg{u_3,u_2^*}u_2^* = x^2 -13x + \frac{91}{3}, u_3^* = \sqrt{\frac{3}{4004}}(x^2-13x+\frac{91}{3})\]
+
+ (b): The best approximate function is 
+ \[
+    \hat{\varphi}
+ \]
+
+ \begin{equation*}
+      \begin{aligned}
+            \hat{\varphi}(x) &= \avg{y,u_1^*}u_1^* +\avg{y,u_2^*}u_2^* + \avg{y,u_3^*}u_3^* \\
+                  &= \frac{831}{\sqrt{3}}u_1^* + \frac{589}{\sqrt{143}}u_2^* 
+                  + \frac{12068\sqrt{3}}{\sqrt{4004}}u_3^* \\
+                  &\approx 9.042x^2 - 113.4266x+386.0013
+      \end{aligned}
+\end{equation*}
+
+(c): The orthonormal polynomials can be reused but the normal equation cannot be reused. Due to we need to recalculated G and solving equation but the previous method just renew index of basis,therefore orthonormal polynomials has advantage over normal equations.
+
+\end{document}
