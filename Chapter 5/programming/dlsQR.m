@@ -1,0 +1,12 @@
+function [a,s,Q,R] = dlsQR(x,y)
+[~,p] = size(x);
+A = zeros(p,3);
+A(:,1) = ones(p,1);
+A(:,2) = x';
+A(:,3) = (x.*x)';
+[Q,R] = qr(A);
+R=R(1:3,1:3);
+c=Q'*y';
+c=c(1:3);
+a=inv(R)*c;
+s=cond(R,2);
