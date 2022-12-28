@@ -1,0 +1,166 @@
+\documentclass{article}
+\usepackage{amssymb}
+\usepackage{amsmath}
+\title{\textbf{Theoretical Questions Chapter 6}}
+\author{Ling Siu Hong \\ 3200300602}
+\begin{document}
+\maketitle
+
+\textbf{I(a)} :  As using interpolation polynomial, the following table of divided difference
+
+\begin{tabular}{c|cccc}
+-1 & $y(-1)$ \\
+0  & $y(0)$ & $y(0)-y(-1)$ \\
+0  & $y(0)$ & $y'(0)$ & $y'(0)-y(0)+y(-1)$ \\
+1  & $y(1)$ & $y(1)-y(0)$ & $y(1)-y(0)-y'(0)$ & $\frac{y(1)-2y'(0)-y(-1)}{2}$
+\end{tabular}.
+
+Then the interpolation polynomial 
+\begin{align*}
+& p_3(y;-1,0,0,1;x) \\
+&= y(-1)+(y(0)-y(-1))(x+1)+(y'(0)-y(0)+y(-1))x(x+1)+\frac{(y(1)-2y'(0)-y(-1)}{2}x^2(x+1), \\
+\end{align*}
+therefore,
+\begin{align*}
+&\int_{-1}^{1}p_{3}(y;-1,0,0,1;t)dt \\
+& = \int_{-1}^{1}[ y(-1)+(y(0)-y(-1))(t+1)+(y'(0)-(y(0)-y(-1)))t(t+1)x \\
+& \quad +\frac{y(1)-2y'(0)-y(-1)}{2}t^2(t+1)]dt\\
+& = 2y(-1)+2(y(0)-y(-1))+\frac{2}{3}(y'(0)-(y(0)+y(-1)))+\frac{2}{3}\frac{y(1)-2y'(0)-y(-1)}{2}\\
+& = \frac{y(-1)+4y(0)+y(1)}{3}\\
+& = \int_{-1}^1y(t)dt - E^S(y),
+\end{align*}
+the proof is shown.
+
+\textbf{I(b)} : From the previous question, we have 
+\begin{align*}
+    & E^s(y) \\
+    & = \int_{-1}^{1}[y(t) - p_3(y;-1,0,0,1;t)]dt \\
+    & = \int_{-1}^1 \frac{y^{(4)}(\xi)}{4!}t^2(t+1)(t-1)dt \quad (Theorem 2.35) \\
+    & = \frac{y^{(4)}(\zeta)}{4!} \int_{-1}^1 t^2(t+1)(t-1)dt \quad (Integration\ mean\ value\ theorem) \\
+    & = -\frac{y^{(4)}(\zeta)}{90}
+\end{align*}
+where $\xi , \zeta \in (-1,1)$.
+
+\textbf{I(c)} : For function $f$ on general interval $[a,b]$,by substitute $ x = \frac{b-a}{2}t + \frac{b+a}{2}$ , $y(t) := f(\frac{b-a}{2}t + \frac{b+a}{2})$ , then we can get 
+\begin{align*}
+    \int_a^b f(x)dx & = \int_{-1}^1 f(\frac{b-a}{2}t + \frac{b+a}{2})\frac{b-a}{2}dt \\
+    & = \frac{b-a}{2} \int_{-1}^1 [p_3(y;-1,0,0,1;t)dt + E^(y) ]dt \\
+    & = \frac{b-a}{2}[\frac{1}{3}(y(-1)+4(y(0))+y(1) + E^(y)] \\
+    & = \frac{b-a}{2}[\frac{1}{3}(f(a)+4f(\frac{a+b}{2})+f(b)) - \frac{y^{(4)}(\zeta)}{90}] \quad \zeta \in (-1,1).   \\
+\end{align*}
+Therefore, the error estimation is 
+\begin{align*}
+    E^S(f) & = -\frac{b-a}{180} f^{(4)}(\frac{b-a}{2}t + \frac{b+a}{2})|_{\zeta} \\
+    & = -\frac{(b-a)^5}{2880}f^{(4)}\xi ,
+\end{align*}
+where $\xi \in (a,b)$.
+Denote $a = x_0 < x_1 < \cdots < x_n = b , \quad  n=2m \in \mathbb{N}^+ $ ,and $h =\frac{a+b}{n}$ we have the partitions of the interval $[a,b]$ into $m$ sub-intervals , which $ [x_0,x_2], \cdots , [x_{n-2},x_n]$, therefore 
+\begin{align*}
+    \int_a^bf(x)dx & = \displaystyle\sum_{k=1}^{m}\int_{2k-2}^{2k}f(x)dx \\ 
+    & = \frac{h}{3}[f(x_0)+4f(x_1)+2f(x_2)+4f(x_3)+2f(x_4)+\cdots+4f(x_{n-1}+f(x_n))] \\
+    & \quad + \displaystyle\sum_{k=1}^{m}E_{x_{2k-2},x_{2k}}^S(f)
+\end{align*}.
+The composite Simpson's rule is $\frac{h}{3}[f(x_0)+4f(x_1)+2f(x_2)+4f(x_3)+2f(x_4)+\cdots+4f(x_{n-1}+f(x_n))]$,and the error estimation is
+\begin{align*}
+    \displaystyle\sum_{k=1}^mE_{x_{2k-2},x_{2k}}^S(f) & = -\displaystyle\sum_{k=1}^m\frac{(2h)^5}{2880}f^{(4)}(\xi_k)\\
+    & = -\frac{b-a}{180}h^4(\frac{2}{n}\sum_{k=1}^mf^{(4)}(\xi_k))\\
+    & = -\frac{b-a}{180}h^4f^{(4)}(\xi), \quad where \quad \xi \quad \xi_k \in (a,b).
+\end{align*}
+
+\textbf{II(a)}: Let $a=0,b=1,h=\frac{1}{n}$,
+\begin{equation*}
+    f''(x) = (4x^2-2)e^{-x^2} \quad \max_{[0,1]}|f''(x)| = \frac{2}{e}.
+\end{equation*}
+By 
+\begin{equation*}
+    |E_n^T(f)|= |\frac{b-a}{12}h^2f''(\xi)|=|\frac{f''(\xi)}{12n^2}| \leq 0.5 \times 10^{-6},
+\end{equation*}
+\begin{equation*}
+    n\geq \sqrt{\frac{2}{e(12)(0.5)(10^{-6})}} \approx 350.18
+\end{equation*}
+Hence, at least 351 sub-intervals are required.
+
+\textbf{II(b)} : By
+\begin{equation*}
+    f^{(4)}(x) = (16x^4 - 48x^2 + 12)e^{-x^2} \quad 
+\max_{[0,1]}f^{(4)}(x) = 12 ,
+\end{equation*}
+and
+\begin{equation*}
+    |E^S_n(f)| = |\frac{1}{180n^4} f^{(4)}(\xi)|   
+      \leq \frac{1}{15n^4} \leq 0.5 \times 10^{-6} ,
+\end{equation*}
+\begin{equation*}
+    n\geq \sqrt[4]{\frac{12}{180(0.5)(10^{-6})}} \approx 19.11.
+\end{equation*}
+Hence, at least 20 sub-intervals are required.
+
+\textbf{III(a)}: By $<1,\pi_2(t)> = <t,\pi_2(t)> =0 $, we have
+\begin{align*}
+    \int_0^{+\infty}(t^2+at+b)e^{-t}dt &= 2+a+b = 0,\\
+    \int_0^{+\infty}t(t^2+at+b)e^{-t}dt &= 6+2a+b = 0.
+\end{align*}
+We can get $a = -4, b=2$,then the polynomial is $ \pi_2(t) = t^2 -4t + 2$.
+
+\textbf{III(b)} : Let $\pi_2(t)=0$,we can get $ t_1 = 2-\sqrt{2}, t_2 = 2+\sqrt{2}$.By Corollary 6.26, we have
+\begin{align*}
+    w_1+w_2 & =\int_0^{+\infty}e^{-t}dt =1,\\
+    t_1w_1+t_2w_2 & =\int_0^{+\infty}te^{-t}dt =1.\\
+\end{align*}
+We can get $w_1=\frac{2+\sqrt{2}}{4}$ and $w_2=\frac{2-\sqrt{2}}{4}$, thus
+\begin{equation*}
+    I_2(f) = \frac{2+\sqrt{2}}{4}f(2-\sqrt{2}) + \frac{2-\sqrt{2}}{4}f(2+\sqrt{2}).
+\end{equation*}
+Therefore, the two-point Gauss-Laguerre quadrature formula is
+\begin{equation*}
+    \int_0^{+\infty} f(t)e^{-t}dt = \frac{2+\sqrt{2}}{4}f(2-\sqrt{2}) + \frac{2-\sqrt{2}}{4}f(2+\sqrt{2}) + E_2(f).
+\end{equation*}
+By Theorem 6.36, 
+\begin{align*}
+    E_2(f) & =  \frac{f^{(4)}(\tau)}{4!}\int_{0}^{+\infty}(\pi_2(t))^{2}e^{-t}dt \\
+    & = \frac{f^{(4)}(\tau)}{4!}\int_{0}^{+\infty}(t^{4}-8t^{3}+20t^{2}-16t+4)e^{-t}dt \\
+    & =\frac{f^{(4)}(\tau)}{6}    
+\end{align*}  
+
+\textbf{III(c)} : Substitute $f(t) = \frac{1}{1+t}$, the approximate
+\begin{equation*}
+    I^G(f) = \frac{2+\sqrt{2}}{4}\frac{1}{1+2-\sqrt{2}}+\frac{2-\sqrt{2}}{4}\frac{1}{1+2+\sqrt{2}} =\frac{4}{7}.
+\end{equation*}
+The estimation error is $E_2(f) =\frac{f^{(4)}(\tau)}{6} = \frac{4}{(1+\tau)^5}.$ 
+With $I=0.596347361$,
+\begin{align*}
+    E_2(F) & = I - I^G(f) \\
+    \frac{4}{(1+\tau)^5} & \approx 0.02491879.
+\end{align*}
+we can get $\tau = 1.761$.
+
+\textbf{Iv(a)} : Consider $h_m$ and $q_m$ in the form $h_m(t) = (a_m + b_m t)l_m^2(t)$, $q_m(t) = (c_m + d_m t)l_m^2(t)$, we have $h_m'(t)=b_ml_m^2(t)+2(a_m+b_mt)l_m(t)l_m'(t)$ and $q_m'(t)=d_ml_m^2(t)+2(c_m+d_mt)l_m(t)l_m'(t)$,where the $l_m'(x_m)=\displaystyle\sum_{i=1,i\neq m}^n\frac{1}{x_m-x_i}$.
+
+Therefore , we solve the following equations, $\forall i = 1,2,\dots,n$
+\begin{align*}
+     h_m(x_m)  & = a_m +b_mx_m  = 1 ,\\
+     h_m'(x_m) & = b_m + 2(a_m+b_mx_m)l_m'(x_m)  = 0, \\
+     q_m(x_m)  & = c_m +d_mx_m  = 1 ,\\
+     q_m'(x_m) & = d_m + 2(c_m+d_mx_m)l_m'(x_m)  = 0 ,\\
+\end{align*}
+thus, $a_m = 1+ 2x_ml_m'(x_m)$ , $b_m =-2l_m'(x_m)$ , $c_m = -x_m$ ,$d_m=1$.
+
+\textbf{IV(b)}:
+\begin{align*}
+    I_n(f)& =I_n(p(f))\\
+    &=\int_a^b\rho(t)
+    \sum_{k=1}^n(h_kf_k+q_kf_k') dt\\
+    &=\sum_{k=1}^n[f(x_k)\int_a^b\rho(t)h_k(t) dt+f'(x_k)\int_a^b\rho(t)q_k(t)dt] \\
+    & :=\sum_{k=1}^n[w_kf(x_k)+\mu_kf'(x_k)]
+\end{align*}
+where $w_k =\int_a^b\rho(t)h_k(t)dt$ and $ \mu_k =\int_a^b\rho(t)q_k(t) dt$.
+
+\textbf{IV(c)} : Let
+\begin{align*}
+      \mu_k &= \int\rho(t)(t-x_k)l_k^2(t)dt = 0\\
+      & \Rightarrow \int\rho(t)v_n(t)l_k(t) = 0, \quad \forall k = 1,2,\cdots,n.
+\end{align*}
+As $\textbf{P}_{n-1}=span\{l_1,l_2, \cdots,l_n\}=span\{1,t,\cdots,t^{n-1}\}$,thus the condition is 
+$\int_a^b \rho(t)v_n(t)p(t)dt = 0.$
+
+\end{document}
