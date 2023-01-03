@@ -1,0 +1,5 @@
+make : function.h splines.h bspline.h A.cpp B.cpp 
+	g++ -o function.h splines.h bspline.h A.cpp
+	./A
+	g++ -o function.h splines.h bspline.h B.cpp
+	./B
