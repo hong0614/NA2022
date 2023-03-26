@@ -1,8 +1,31 @@
 include <iostream>
 
-int main
+void PDE_Matrix::setNeumannBC()
 {
-  std::cout << "Hello,world!" << std::endl;
-  
-  return 0;
+	int n = N - 1;
+	double h = 1.0 / N;
+	// left boundary
+	for (int j = 1; j < n; j++) {
+		int i = 0;
+		A[i * n + j][i * n + j] -= 1.0 / (2 * h);
+		A[i * n + j][(i + 1) * n + j] += 1.0 / (2 * h);
+	}
+	// right boundary
+	for (int j = 1; j < n; j++) {
+		int i = n - 1;
+		A[i * n + j][i * n + j] += 1.0 / (2 * h);
+		A[i * n + j][(i - 1) * n + j] -= 1.0 / (2 * h);
+	}
+	// bottom boundary
+	for (int i = 1; i < n; i++) {
+		int j = 0;
+		A[i * n + j][i * n + j] -= 1.0 / (2 * h);
+		A[i * n + j][i * n + j + 1] += 1.0 / (2 * h);
+	}
+	// top boundary
+	for (int i = 1; i < n; i++) {
+		int j = n - 1;
+		A[i * n + j][i * n + j] += 1.0 / (2 * h);
+		A[i * n + j][i * n + j - 1] -= 1.0 / (2 * h);
+	}
 }
