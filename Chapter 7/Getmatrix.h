@@ -8,6 +8,7 @@
 using namespace std;
 using namespace Eigen;
 
+
 class Point
 {
 	vector<double> x, y;
@@ -88,9 +89,9 @@ vector<vector<double>> PDE_Matrix::getA(int N)
 MatrixXd PDE_Matrix::get_eigenA(vector<vector<double>>A, int N)
 {
 	MatrixXd A2D = MatrixXd::Zero((N - 1)* (N - 1), (N - 1) * (N - 1));
-	for (int i = 0; i < N; i++)
+	for (int i = 0; i < (N - 1) * (N - 1); i++)
 	{
-		for (int j = 0; i < N; i++)
+		for (int j = 0; j < (N - 1) * (N - 1); j++)
 		{
 			A2D(i,j) = A[i][j];
 		}
@@ -131,29 +132,110 @@ vector<vector<double>> PDE_Matrix::getF(Function& func, int N)
 	return F;
 }
 
-VectorXd PDE_Matrix::get_eigenF(vector<vector<double>>A, int N)
+VectorXd PDE_Matrix::get_eigenF(vector<vector<double>>F, int N)
 {
-	VectorXd F2D = VectorXd::Zero(N - 1);
-	for (int i = 0; i < N; i++)
+	VectorXd F2D = VectorXd::Zero((N - 1) * (N - 1));
+	for (int i = 0; i < N-1; i++)
 	{
-		for (int j = 0; i < N; i++)
+		for (int j = 0; j < N-1; j++)
 		{
-			F2D((i)+(j) * (N - 1)) = F[i + 1][j + 1];
+			F2D((i)+(j) * (N - 1)) = F[i][j];			
 		}
 	}
 
 	return F2D;
 }
-class Condition :public PDE_Matrix
+
+class True_solution
+{
+public:
+	vector<double> true_solution(Function& func, int N)
+	{
+		double h = 1.0 / N;
+		vector<double> u_;
+		u_.resize((N - 1) * (N - 1));
+		for (int i = 0; i < N - 1; i++)
+		{
+			for (int j = 0; j < N - 1; j++)
+			{
+				double t_1 = static_cast<double>(i) + 1;
+				double t_2 = static_cast<double>(j) + 1;
+				u_[i * (N - 1) + j] = func(t_2 * h, t_1 * h);
+			}
+		}
+
+		return u_;
+	}
+};
+
+class Error
+{
+public:
+	Error(VectorXd A, vector<double>B, int norm)
+	{
+		int m = A.size();
+		double error = 0.0;
+		if (norm == 1)
+		{
+			for (int i = 0; i < m; i++)
+			{
+				error += fabs(A(i) - B[i]);
+			}
+			cout << "1-norm eroor is " << error << endl;
+		}
+
+		else if (norm == 2)
+		{
+			for (int i = 0; i < m; i++)
+			{
+				error += (A(i) - B[i]) * (A(i) - B[i]);
+			}
+			error = sqrt(error);
+			cout << "2-norm eroor is " << error << endl;
+		}
+
+		else
+		{
+			for (int i = 0; i < m; i++)
+			{
+				double e = fabs(A(i) - B[i]);
+				if (error < e)
+				{
+					error = e;
+				}
+			}
+
+			cout << "max-error is " << error << endl;
+		}
+	}
+
+	void convergence_rate(double error_n, double error_2n, int n)
+	{
+		double c = log(error_n / error_2n) / log(2);
+		cout << "convergence rate is " << c << endl;
+	}
+};
+
+class Equationsolver
+{
+public:
+	VectorXd solve(MatrixXd A, VectorXd b)
+	{
+		MatrixXd x;
+		x = A.colPivHouseholderQr().solve(b);
+	}
+};
+
+class PoissonSolver:public PDE_Matrix
 {
 private:
 	int N;
 	vector<vector<double>> A, F;
 
 public:
-	//Condition(Function& func, Function& ddfunc, const string& type_name, int N);
+	//PoissonSolver(Function& func, Function& ddfunc, const string& type_name, int N);
 
-	Condition(Function& func, Function& ddfunc, const string& type_name, int N)
+	PoissonSolver(Function& func, Function& ddfunc, const string& type_name, int N)
 	{
 		PDE_Matrix p1;
 		vector<vector<double>>A = p1.getA(N);
@@ -188,7 +270,7 @@ public:
 
 					if (i == m - 1)
 					{
-						F[i][j] += func(x[i + 2], y[j + 1]);
+						F[i][j] += func(x[i +2], y[j + 1]);
 					}
 
 					if (j == m - 1)
@@ -199,17 +281,48 @@ public:
 			}
 		}
 
-		for (int i = 0; i < m ; i++)
-		{
-			for (int j = 0; j < m ; j++)
-			{
-				cout << F[i][j] << " ";
-			}
-			cout << endl;
-		}
+		//for (int i = 0; i < m ; i++)
+		//{
+		//	for (int j = 0; j < m ; j++)
+		//	{
+		//		cout << F[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
+		
+		//for (int i = 0; i < (N - 1) * (N - 1); i++)
+		//{
+		//	for (int j = 0; j < (N - 1) * (N - 1); j++)
+		//	{
+		//		cout << A[i][j] << " ";
+		//	}
+		//	cout << endl;
+		//}
 
+		MatrixXd A2D = get_eigenA(A, N);
+		//cout << A2D << endl;
+
+		VectorXd F2D = get_eigenF(F, N);
+		//cout << F2D << endl;
+
+		VectorXd u = A2D.colPivHouseholderQr().solve(F2D);
+		//cout << u << endl;
+
+		True_solution utrue;
+		vector<double> u_true = utrue.true_solution(func,N);
+		//for (int i = 0; i < (N - 1) * (N - 1); i++)
+		//{
+		//	cout << u_true[i] << endl;
+		//}
+
+		Error err(u, u_true, 1);
+		Error err1(u, u_true, 2);
+		Error err2(u, u_true, 3);
 	}
-
-
 };
+
+
+
+
+
 
